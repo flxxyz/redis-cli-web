@@ -4,19 +4,17 @@ ENV GOPATH "/opt/redis-cli-web"
 
 WORKDIR $GOPATH
 
-RUN echo '' > /etc/apk/repositories; \
-    echo 'https://mirrors.aliyun.com/alpine/v3.9/main/' >> /etc/apk/repositories; \
+RUN echo 'https://mirrors.aliyun.com/alpine/v3.9/main/' > /etc/apk/repositories; \
     echo 'https://mirrors.aliyun.com/alpine/v3.9/community/' >> /etc/apk/repositories; \
-    apk add --no-cache musl-dev git go; \
+    apk add --no-cache musl-dev git go upx; \
     go version; \
-    mkdir bin src; \
     git config --global http.sslVerify false; \
     go get -u -v -ldflags "-s -w" github.com/yudai/gotty; \
     go get -u -v -ldflags "-s -w" github.com/holys/redis-cli; \
-    rm -rf ${GOPATH}/src ${GOPATH}/pkg; \
-    rm -r /var/cache/apk; \
-    rm -r /usr/share/man; \
-    apk del git go
+    upx --brute ${GOPATH}/bin/gotty; \
+    upx --brute ${GOPATH}/bin/redis-cli; \
+    rm -rf ${GOPATH}/src ${GOPATH}/pkg /var/cache/apk /usr/share/man; \
+    apk del git go upx
 
 ENV PATH $GOPATH/bin:$PATH
 
