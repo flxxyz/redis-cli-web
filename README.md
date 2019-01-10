@@ -30,7 +30,7 @@
 
 4. 再来拉取运行所需web环境镜像
     ```
-    docker push flxxyz/redis-cli-web
+    docker pull flxxyz/redis-cli-web
     ```
 
 5. web环境指定名称，网络，端口号，运行
